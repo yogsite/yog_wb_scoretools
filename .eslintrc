@@ -1,0 +1,69 @@
+{
+  // 新構文に対応するため、babelのパーサで解析
+  "parser": "babel-eslint",
+  // ベースはairbnbのルール
+  "extends": "airbnb",
+  // ブラウザのグローバル変数がある前提
+  "env": {
+    "browser": true
+  },
+  // 0は無効、1は警告、2はエラー
+  "rules": {
+    // 改行コードはCRLF
+    "linebreak-style": ["error", "windows"],
+    // 長さ制限はない
+    "max-len": 0,
+     // import で拡張子を書いてもいい
+    "import/extensions": 0,
+    // 文字列はダブルクォートで囲う
+    "quotes": ["error", "double"],
+    // ケツカンマ禁止
+    "comma-dangle": ["error", "never"],
+     // 変数名やパラメータは別にキャメルケースでなくていい
+    "camelcase": 0,
+    // 使わないクラスメソッドがある分には別にいい
+    "class-methods-use-this": 0,
+    // div とかでもマウスやキーボードイベントを使っていい
+    "jsx-a11y/no-static-element-interactions": 0,
+    // jsx で属性指定が複数行にわたる時でも、別に要素名と同じ行に属性指定を書いていい
+    "react/jsx-first-prop-new-line": 0,
+    // else とかは改行して書いていい
+    "brace-style": ["error", "stroustrup"],
+    // 別に明示的でも else に return 書いていい
+    "no-else-return": 0,
+    // JSX中のimgにaltはなくていい
+    "jsx-a11y/img-has-alt": 0,
+    // 使ってない変数はエラーを上げるが、使ってない引数は別にあってもいい
+    "no-unused-vars": ["error", { "args": "none"}],
+    // ステートレスコンポーネントもクラス構文で書いていい
+    "react/prefer-stateless-function": 0,
+    // ES2015のconstは中身自体の変更はできたりしてややこしいので、constでいい場面でもletで定義するのを許す
+    "prefer-const": 0,
+    // ファイル中に１個しか関数がなくても、defaultエクスポートしなくていい
+    "import/prefer-default-export": 0,
+    // 引数に代入するのは禁止だけど、引数のプロパティは書き換えてもいい
+    "no-param-reassign": [2, { "props": false }],
+    // this.props とかを触る前にいちいちconstに代入しないといけないらしい
+    "react/destructuring-assignment": 0,
+    // 好きな要素にtabindexを設定していい
+    "jsx-a11y/no-noninteractive-tabindex": 0,
+    // a要素のhrefは空でもいい
+    "jsx-a11y/anchor-is-valid": 0,
+    // _で始まる関数名は許可
+    "no-underscore-dangle": 0,
+    // PropTypeにObjectとかを入れてもいい
+    "react/forbid-prop-types": 0,
+    // import では改行はいらない
+    "object-curly-newline": ["error", {"ImportDeclaration": "never"}],
+    // JSXで1行に複数のタグを書いてもいい
+    "react/jsx-one-expression-per-line": 0,
+    // alertとかは使ってもいい
+    "no-alert": 0,
+    // label に普通に id文字列で関連付けられる
+    "jsx-a11y/label-has-associated-control": 0,
+    // クラスを new するだけで、インスタンスを使い捨てるのはあり
+    "no-new": 0,
+    // target=_blank を使うのにref属性の設定はいらない
+    "react/jsx-no-target-blank": 0
+  }
+}
