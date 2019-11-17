@@ -1,0 +1,33 @@
+{
+  "source": "./src",
+  "destination": "./doc",
+  "includes": [
+    "\\.(js|jsx)$"
+  ],
+  "plugins": [
+    {
+      "name": "esdoc-standard-plugin",
+      "option": {
+        "lint": {
+          "enable": false
+        },
+        "coverage": {
+          "enable": false
+        },
+        "accessor": {
+          "access": [
+            "public",
+            "protected"
+          ],
+          "autoPrivate": true
+        }
+      }
+    },
+    {
+      "name": "esdoc-react-plugin"
+    },
+    {
+      "name": "esdoc-jsx-plugin"
+    }
+  ]
+}
