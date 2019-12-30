@@ -24,7 +24,7 @@ export default function YearScore(props) {
   const [isCalculated, setCalculated] = useState(props.whiteBrowser.getProfile("isAutoCalcYearScore", "0") !== "0");
 
   if (isCalculated) {
-    const vFirstScoreFileName = Utils.getFirstEndOfLastScoreFileName(props.whiteBrowser);
+    const vFirstScoreFileName = Utils.getFirstEndOfLastScoreFileName(props.whiteBrowser, (new Date()).getFullYear());
     if (vFirstScoreFileName !== "") {
       const vFirstScoreRecord = (new RecordFileReader(props.whiteBrowser, vFirstScoreFileName)).getRecords();
 

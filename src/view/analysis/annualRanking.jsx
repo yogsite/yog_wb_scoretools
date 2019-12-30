@@ -23,6 +23,13 @@ const StyledLinkSpan = styled.span`
   color: #0000FF;
 `;
 
+const StyledYearCombo = styled.select`
+  box-sizing: border-box;
+  width: calc(100% - 2em);
+  margin-top: 0.5em;
+  margin-left: 1em;
+`;
+
 /**
  * テーブルを表すコンポーネント
  */
@@ -51,19 +58,55 @@ const StyledTable = styled.table`
  *   WhiteBrowser のインスタンスを渡します。
  */
 export default function AnnualRanking(props) {
+  const ALL_YEARS = Utils.getAllYear(props.whiteBrowser, Utils.getScoreFiles(props.whiteBrowser));
+
   const [isCalculated, setCalculated] = useState(props.whiteBrowser.getProfile("isAutoCalcScoreRank", "0") !== "0");
+  const [vTargetYear, setTargetYear] = useState(ALL_YEARS.length === 0 ? "" : ALL_YEARS[0]);
+
+  /**
+   * 指定年最後のスコア情報を得ます
+   *
+   * @param {number} p_year
+   *   指定年
+   * @return
+   *   空配列か Record の配列
+   */
+  const funcLastInfos = (p_year) => {
+    const vLastEndOfLastFileName = Utils.getLastEndOfLastScoreFileName(props.whiteBrowser, p_year);
+    if (props.whiteBrowser.checkFile(Utils.getScoreSaveFolder(props.whiteBrowser, vLastEndOfLastFileName))) {
+      return (new RecordFileReader(props.whiteBrowser, vLastEndOfLastFileName)).getRecords();
+    }
+    else {
+      return [];
+    }
+  };
+
+  /**
+   * 指定年最初のスコア情報を得ます
+   *
+   * @param {number} p_year
+   *   指定年
+   * @return
+   *   空配列か Record の配列
+   */
+  const funcFirstInfos = (p_year) => {
+    const vFirstEndOfLastFileName = Utils.getFirstEndOfLastScoreFileName(props.whiteBrowser, p_year);
+    if (props.whiteBrowser.checkFile(Utils.getScoreSaveFolder(props.whiteBrowser, vFirstEndOfLastFileName))) {
+      return (new RecordFileReader(props.whiteBrowser, vFirstEndOfLastFileName)).getRecords();
+    }
+    else {
+      return [];
+    }
+  };
 
   if (isCalculated) {
-    // 今のスコアは画面のを使う
-    let vEndOfLastRecords = props.whiteBrowser.getInfos("", "");
+    // 今のスコアは選択年と実行年が同じなら画面のを、違えば指定年の最後のを使う
+    let vEndOfLastRecords = (vTargetYear === (new Date()).getFullYear().toString())
+      ? props.whiteBrowser.getInfos("", "")
+      : funcLastInfos(parseInt(vTargetYear, 10));
 
-    // 去年最後のスコア
-    let vFirstEndOfLastRecords = [];
-    const vFirstEndOfLastFileName = Utils.getFirstEndOfLastScoreFileName(props.whiteBrowser);
-    if (props.whiteBrowser.checkFile(Utils.getScoreSaveFolder(props.whiteBrowser, vFirstEndOfLastFileName))) {
-      vFirstEndOfLastRecords = (
-        new RecordFileReader(props.whiteBrowser, vFirstEndOfLastFileName)).getRecords();
-    }
+    // 指定年最後のスコア
+    const vFirstEndOfLastRecords = funcFirstInfos(parseInt(vTargetYear, 10));
 
     // 新しいほうから古いほうのスコアを引いたのを作って
     let vTableRecords = vEndOfLastRecords.map((p_new_entry) => {
@@ -109,7 +152,7 @@ export default function AnnualRanking(props) {
           <tr>
             <th>ランク</th>
             <th>ファイル名</th>
-            <th>今年増えたスコア数</th>
+            <th>{vTargetYear}年に増えたスコア数</th>
           </tr>
         </thead>
         <tbody>
@@ -128,7 +171,14 @@ export default function AnnualRanking(props) {
   }
   else {
     return (
-      <CalcStartButton onClick={(e) => setCalculated(true)}>年間スコア増加ランキングを描画する</CalcStartButton>
+      <>
+        <StyledYearCombo value={vTargetYear} onChange={(e) => setTargetYear(e.target.value)}>
+          {
+            ALL_YEARS.map((p_year) => <option value={p_year}>{p_year}</option>)
+          }
+        </StyledYearCombo>
+        <CalcStartButton onClick={(e) => setCalculated(true)}>年間スコア増加ランキングを描画する</CalcStartButton>
+      </>
     );
   }
 }
