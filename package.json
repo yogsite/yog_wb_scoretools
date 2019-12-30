@@ -21,7 +21,7 @@
     "url": "git+https://github.com/yogsite/yog_wb_scoretools.git"
   },
   "author": "Yog",
-  "license": "GPL v3",
+  "license": "GPL-3.0-only",
   "homepage": "https://github.com/yogsite/yog_wb_scoretools",
   "dependencies": {
     "@babel/core": "^7.6.4",
