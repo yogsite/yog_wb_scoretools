@@ -170,3 +170,8 @@ test('getScoreFilesがディレクトリを弾いてファイル名だけ返す�
   expect(result[0]).toEqual("wbScoreTools_2018_12_31.tsv");
   expect(result[1]).toEqual("wbScoreTools_2050_01_02.tsv");
 });
+
+test('dateToFormatStringは渡したDate型からコメント通りの文字列を生成する', () => {
+  expect(Utils.dateToFormatString(new Date("2019-01-02 03:04:05"))).toEqual("2019/01/02 03:04:05");
+  expect(Utils.dateToFormatString(new Date("2019-11-12 10:11:12"))).toEqual("2019/11/12 10:11:12");
+});
