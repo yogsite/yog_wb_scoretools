@@ -12,7 +12,7 @@
     "build": "webpack --mode development",
     "build_production": "webpack --mode production",
     "test": "jest",
-    "test_one": "jest monthChartTestB.js",
+    "test_one": "jest utilsTest.js",
     "test_coverage": "jest --collect-coverage",
     "doc": "esdoc"
   },

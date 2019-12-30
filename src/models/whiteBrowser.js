@@ -209,5 +209,15 @@ export default class WhiteBrowser {
   getAppDir() {
     return wb.getAppDir();
   }
+
+  /**
+   * トレースログを書き出します。
+   *
+   * @param {string} p_message
+   *   書き出したいメッセージ
+   */
+  info(p_message) {
+    wb.trace(p_message, 0);
+  }
 }
 /* eslint-enable */
