@@ -54,6 +54,13 @@ GPLv3のフリーソフトウェアとして、利用、修正、再配布は自
 
 ## 更新履歴
 
+### 1.0.1.0
+
+- enhancement
+  - [年間スコアと年間スコア増加ランキングで何年のを見るか指定できるようにする](https://github.com/yogsite/yog_wb_scoretools/issues/1)
+  - [前回スコアを増加した日時とファイル情報を記録するようにする](https://github.com/yogsite/yog_wb_scoretools/issues/2)
+  - ライブラリの更新など
+
 ### 1.0.0.0
 
 完成

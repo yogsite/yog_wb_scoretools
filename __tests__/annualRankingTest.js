@@ -45,6 +45,10 @@ test('現在値と去年のスコアデータがあるときに、今年の増�
   let dummyWhiteBrowser = new DummyWhiteBrowser();
   dummyWhiteBrowser.getProfile = () => { return "1" };
   dummyWhiteBrowser.getInfos = () => { return THIS_YEAR_DATA; };
+  dummyWhiteBrowser.getProfile = () => { return "wbScoreTools" };
+  dummyWhiteBrowser.getFileList = () => { return [
+    {name: `wbScoreTools_${(new Date()).getFullYear()}_12_31.tsv`, isDir: false}
+  ]};
 
   // レンダリング
   const wrapper = mount(<AnnualRanking whiteBrowser={dummyWhiteBrowser} />);

@@ -54,7 +54,24 @@ wb.onModifyScore = (p_movie_id, p_new_score) => {
   if (whiteBrowser.getProfile("isScoreAlert", "1") !== "0") {
     const vMovieInfo = whiteBrowser.getInfo(p_movie_id);
 
-    alert(`「${vMovieInfo.title}」のスコアが\r\n${p_new_score}になりました。`);
+    let vLastModifyMessage = "";
+    const vLastModifyScoreId = whiteBrowser.getProfile("lastModifyScoreId", "");
+    const vLastModifyScoreDateTime = whiteBrowser.getProfile("lastModifyScoreDateTime", "");
+    if (vLastModifyScoreId.length !== 0) {
+      const vLastModifyMovieInfo = whiteBrowser.getInfo(vLastModifyScoreId);
+      if (vLastModifyMovieInfo) {
+        vLastModifyMessage = `\r\n\r\n前回スコアを増やした動画：${vLastModifyMovieInfo.title}${vLastModifyMovieInfo.ext}`
+          + `\r\n更新日時：${vLastModifyScoreDateTime}`;
+      }
+      else {
+        vLastModifyMessage = `\r\n\r\n前回スコアを増やした動画：${vLastModifyScoreId}(IDに一致する動画がありませんでした)\r\n更新日時：${vLastModifyScoreDateTime}`;
+      }
+    }
+
+    alert(`「${vMovieInfo.title}」のスコアが\r\n${p_new_score}になりました。${vLastModifyMessage}`);
+
+    whiteBrowser.writeProfile("lastModifyScoreId", p_movie_id);
+    whiteBrowser.writeProfile("lastModifyScoreDateTime", Utils.dateToFormatString(new Date()));
   }
 };
 /* eslint-enable */

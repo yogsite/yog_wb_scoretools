@@ -141,11 +141,13 @@ export default class WhiteBrowser {
    *   - title {string}
    *   - ext {string}
    *   - score {number}
+   *
+   *   動画が存在しなかった場合は「null」が戻されます。
    */
   getInfo(p_movie_id) {
     const vInfo = wb.getInfo(p_movie_id);
 
-    return {
+    return (!vInfo) ? null : {
       id: vInfo.id,
       drive: vInfo.drive,
       dir: vInfo.dir,
@@ -206,6 +208,16 @@ export default class WhiteBrowser {
    */
   getAppDir() {
     return wb.getAppDir();
+  }
+
+  /**
+   * トレースログを書き出します。
+   *
+   * @param {string} p_message
+   *   書き出したいメッセージ
+   */
+  info(p_message) {
+    wb.trace(p_message, 0);
   }
 }
 /* eslint-enable */

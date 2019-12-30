@@ -59,20 +59,45 @@ export default class Utils {
   }
 
   /**
-   * 去年末、または今年の最初の月末スコアファイルの名前を作って返します。
+   * 指定年の去年末、または指定年の最初の月末スコアファイルの名前を作って返します。
    *
    * @param {WhiteBrowser} p_white_browser
    *   WhiteBrowser クラスのインスタンス
+   * @param {number} p_year
+   *   何年のものを取ってくるかを指定します
    * @return
-   *   今年最初の月末スコアファイルの名前
+   *   指定年の最初の月末スコアファイルの名前
    *
    *   存在しているかはチェックしているので、なかった場合は空文字が戻ってきます。
    */
-  static getFirstEndOfLastScoreFileName(p_white_browser) {
-    const vNow = new Date();
-
+  static getFirstEndOfLastScoreFileName(p_white_browser, p_year) {
     for (let i = 0; i < 12; i += 1) {
-      const vFileName = Utils.getScoreFileName(p_white_browser, new Date(vNow.getFullYear(), i, 0));
+      const vFileName = Utils.getScoreFileName(p_white_browser, new Date(p_year, i, 0));
+      const vFilePath = Utils.getScoreSaveFolder(p_white_browser, vFileName);
+
+      if (p_white_browser.checkFile(vFilePath)) {
+        return vFileName;
+      }
+    }
+
+    return "";
+  }
+
+  /**
+   * 指定年の最後、または去年末の月末スコアファイルの名前を作って返します。
+   *
+   * @param {WhiteBrowser} p_white_browser
+   *   WhiteBrowser クラスのインスタンス
+   * @param {number} p_year
+   *   何年のものを取ってくるかを指定します
+   * @return
+   *   指定年の最後の月末スコアファイルの名前
+   *
+   *   存在しているかはチェックしているので、なかった場合は空文字が戻ってきます。
+   */
+  static getLastEndOfLastScoreFileName(p_white_browser, p_year) {
+    for (let i = 12; i >= 0; i -= 1) {
+      const vFileName = Utils.getScoreFileName(p_white_browser, new Date(p_year, i, 0));
       const vFilePath = Utils.getScoreSaveFolder(p_white_browser, vFileName);
 
       if (p_white_browser.checkFile(vFilePath)) {
@@ -212,5 +237,53 @@ export default class Utils {
         .filter((p_entry) => !p_entry.isDir)
         .map((p_entry) => p_entry.name)
     );
+  }
+
+  /**
+   * スコアファイルのパス一覧を与えると
+   * スコアファイルが存在する年の配列を作って返します。
+   *
+   * getScoreFiles と組み合わせて使う想定。
+   *
+   * @param {WhiteBrowser} p_white_browser
+   *   WhiteBrowser クラスのインスタンス
+   * @param {[String]} p_score_files
+   *   getScoreFiles の結果と同じようなファイルパスの配列
+   * @return
+   *   年(文字列)の配列。結果は降順ソートされて戻ってきます。
+   */
+  static getAllYear(p_white_browser, p_score_files) {
+    // 抜く作業
+    let vYearArray = p_score_files
+      .map((p_filepath) => Utils.extractScoreFileNameData(p_white_browser, p_filepath)) // Dateにする
+      .filter((p_year) => p_year !== null) // 変換できなかったのは消す
+      .map((p_file_date) => p_file_date.getFullYear()) // 年だけにする
+      .reduce((p_accum, p_current) => ( // 重複を抜く
+        p_accum.includes(p_current) ? p_accum : p_accum.concat(p_current)
+      ), []);
+
+    // ソートして文字列にして戻す
+    return vYearArray
+      .sort((a, b) => b - a)
+      .map((p_year) => p_year.toString());
+  }
+
+  /**
+   * 指定の日付を「YYYY/MM/DD hh:mm:ss」にフォーマットした文字列を作って返します。
+   *
+   * @param {Date} P_date
+   *   使いたい Date型
+   * @return
+   *   YYYY/MM/DD hh:mm:ss 文字列
+   */
+  static dateToFormatString(p_date) {
+    /* eslint-disable prefer-template */
+    return `${p_date.getFullYear()}/`
+      + `${("00" + (p_date.getMonth() + 1)).slice(-2)}/`
+      + `${("00" + p_date.getDate()).slice(-2)} `
+      + `${("00" + p_date.getHours()).slice(-2)}:`
+      + `${("00" + p_date.getMinutes()).slice(-2)}:`
+      + `${("00" + p_date.getSeconds()).slice(-2)}`;
+    /* eslint-enable */
   }
 }
