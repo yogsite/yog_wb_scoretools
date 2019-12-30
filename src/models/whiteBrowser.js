@@ -141,11 +141,13 @@ export default class WhiteBrowser {
    *   - title {string}
    *   - ext {string}
    *   - score {number}
+   *
+   *   動画が存在しなかった場合は「null」が戻されます。
    */
   getInfo(p_movie_id) {
     const vInfo = wb.getInfo(p_movie_id);
 
-    return {
+    return (!vInfo) ? null : {
       id: vInfo.id,
       drive: vInfo.drive,
       dir: vInfo.dir,

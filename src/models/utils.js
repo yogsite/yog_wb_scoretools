@@ -213,4 +213,23 @@ export default class Utils {
         .map((p_entry) => p_entry.name)
     );
   }
+
+  /**
+   * 指定の日付を「YYYY/MM/DD hh:mm:ss」にフォーマットした文字列を作って返します。
+   *
+   * @param {Date} P_date
+   *   使いたい Date型
+   * @return
+   *   YYYY/MM/DD hh:mm:ss 文字列
+   */
+  static dateToFormatString(p_date) {
+    /* eslint-disable prefer-template */
+    return `${p_date.getFullYear()}/`
+      + `${("00" + (p_date.getMonth() + 1)).slice(-2)}/`
+      + `${("00" + p_date.getDate()).slice(-2)} `
+      + `${("00" + p_date.getHours()).slice(-2)}:`
+      + `${("00" + p_date.getMinutes()).slice(-2)}:`
+      + `${("00" + p_date.getSeconds()).slice(-2)}`;
+    /* eslint-enable */
+  }
 }
