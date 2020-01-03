@@ -54,6 +54,11 @@ GPLv3のフリーソフトウェアとして、利用、修正、再配布は自
 
 ## 更新履歴
 
+### 1.0.2.0
+
+- bug
+  - [年スコアや増加ランクのような月単位集計のもので、現在の最新データを今月分のファイルとする](https://github.com/yogsite/yog_wb_scoretools/issues/5)
+
 ### 1.0.1.0
 
 - enhancement

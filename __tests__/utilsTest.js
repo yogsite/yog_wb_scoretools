@@ -244,5 +244,5 @@ test('getAllYearがスコアファイル名から年の配列を作れるか', (
     "wbScoreTools_2016_01_01.tsv",
     "wbScoreTools_2019_01_01.tsv",
     "wbScoreTools_2018_01_01.tsv"
-  ])).toEqual(["2019", "2018", "2016"]);
+  ])).toEqual([(new Date()).getFullYear().toString(), "2019", "2018", "2016"]);
 });
