@@ -36,7 +36,13 @@ export function calcChartData(p_white_browser) {
         score: p_records[1].reduce((p_sum, p_record) => p_record.score + p_sum, 0)
       };
       /* eslint-enable */
-    });
+    })
+    .concat({
+      /* eslint-disable prefer-template */
+      month: `${(new Date()).getFullYear()}/` + ("00" + ((new Date()).getMonth() + 1)).slice(-2),
+      /* eslint-enable */
+      score: p_white_browser.getInfos("", "").reduce((p_sum, p_record) => p_record.score + p_sum, 0)
+    }); // 最後に今月分のスコアデータを突っ込む
 }
 
 /**
