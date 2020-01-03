@@ -70,11 +70,20 @@ Utils.getScoreFiles = jest.fn()
 Utils.isEndOfMonthScoreFile = jest.fn()
   .mockReturnValue(true).bind(Utils);
 
-test('指定のデータ通りのチャートデータが生成されること', () => {
-  const calcData = calcChartData(new DummyWhiteBrowser());
+let dummyWhiteBrowser = new DummyWhiteBrowser();
+dummyWhiteBrowser.getProfile = () => { return "1" };
+dummyWhiteBrowser.getInfos = () => {
+  return [
+    new Record(1, "", "", "スコア1万", "", 10000)
+  ];
+};
 
-  expect(calcData.length).toEqual(3);
+test('指定のデータ通りのチャートデータが生成されること', () => {
+  const calcData = calcChartData(dummyWhiteBrowser);
+
+  expect(calcData.length).toEqual(4); // 今月分データが増えるので、CSVより1個多い
   expect(calcData[calcData.findIndex((r) => r.month === "2019/01")].score).toEqual(15);
   expect(calcData[calcData.findIndex((r) => r.month === "2019/02")].score).toEqual(150);
   expect(calcData[calcData.findIndex((r) => r.month === "2019/03")].score).toEqual(1500);
+  expect(calcData[calcData.findIndex((r) => r.month === `${(new Date()).getFullYear()}/` + ("00" + ((new Date()).getMonth() + 1)).slice(-2))].score).toEqual(10000);
 });
