@@ -258,6 +258,7 @@ export default class Utils {
       .map((p_filepath) => Utils.extractScoreFileNameData(p_white_browser, p_filepath)) // Dateにする
       .filter((p_year) => p_year !== null) // 変換できなかったのは消す
       .map((p_file_date) => p_file_date.getFullYear()) // 年だけにする
+      .concat((new Date()).getFullYear()) // 今の年を突っ込む
       .reduce((p_accum, p_current) => ( // 重複を抜く
         p_accum.includes(p_current) ? p_accum : p_accum.concat(p_current)
       ), []);
